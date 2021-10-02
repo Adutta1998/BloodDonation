@@ -48,9 +48,7 @@ class EditProfile extends StatelessWidget {
                   isTextArea: true,
                 ),
                 DropDownField(
-                  controller: bloodGroupController,
-                  items: bloodGroups,
-                )
+                    items: bloodGroups, hintText: "Select Blood Group")
               ],
             ),
           ),

@@ -15,7 +15,7 @@ class PrimaryButton extends StatelessWidget {
     return InkWell(
       onTap: onTap ??
           () {
-            print("not implemented");
+            //TODO not implimented
           },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 24),
