@@ -4,7 +4,7 @@ import 'package:blood_donation/custom_widgets/text_fields.dart';
 import 'package:flutter/material.dart';
 
 class EditProfile extends StatelessWidget {
-  static const ROUTE_NAME = "edit_profile";
+  static const ROUTE_NAME = "/edit_profile";
   List<String> bloodGroups = [
     "A+",
     "B+",
