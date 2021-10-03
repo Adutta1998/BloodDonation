@@ -1,6 +1,7 @@
 import 'package:blood_donation/custom_widgets/buttons.dart';
 import 'package:blood_donation/custom_widgets/text_fields.dart';
 import 'package:blood_donation/screens/edit_profile.dart';
+import 'package:blood_donation/screens/signup.dart';
 import 'package:blood_donation/utils/colors.dart';
 import 'package:blood_donation/utils/fonts.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,6 +54,10 @@ class HomeScreen extends StatelessWidget {
             ),
             Expanded(child: Container()),
             InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SignUpScreen()));
+              },
               child: Row(
                 children: [
                   const Text("Not A User? "),
