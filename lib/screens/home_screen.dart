@@ -55,8 +55,7 @@ class HomeScreen extends StatelessWidget {
             Expanded(child: Container()),
             InkWell(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignUpScreen()));
+                Navigator.pushNamed(context,SignUpScreen.ROUTE_NAME);
               },
               child: Row(
                 children: [

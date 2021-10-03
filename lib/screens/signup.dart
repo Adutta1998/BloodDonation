@@ -4,6 +4,7 @@ import 'package:blood_donation/utils/fonts.dart';
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatelessWidget {
+  static const ROUTE_NAME = "/signup";
   const SignUpScreen({Key? key}) : super(key: key);
 
   @override

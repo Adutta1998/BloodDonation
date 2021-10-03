@@ -8,6 +8,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const HomeScreen());
     case EditProfile.ROUTE_NAME:
       return MaterialPageRoute(builder: (context) => EditProfile());
+    case SignUpScreen.ROUTE_NAME:
+      return MaterialPageRoute(builder: (context) => SignUpScreen());
     default:
       return MaterialPageRoute(builder: (context) => const HomeScreen());
   }
