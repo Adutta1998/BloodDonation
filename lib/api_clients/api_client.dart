@@ -1,7 +1,6 @@
 import 'package:blood_donation/api_clients/workor.blood.dart';
 import 'package:blood_donation/models/auth.model.dart';
 import 'package:blood_donation/models/profile.model.dart';
-import 'package:supabase/supabase.dart';
 
 class BDApi {
   ServiceWorker worker = ServiceWorker.getInstance();
