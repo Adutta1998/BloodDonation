@@ -10,4 +10,8 @@ class CustomColors {
 
   static Color redAccent1 = const Color(0xffaa0000);
   static Color redAccent2 = const Color(0xffaa0000);
+
+  static Color success = const Color(0xff00ff00);
+  static Color warning = const Color(0xff00aaaa);
+  static Color error = const Color(0xffaa0000);
 }

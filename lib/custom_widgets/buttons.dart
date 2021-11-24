@@ -3,9 +3,15 @@ import 'package:blood_donation/utils/fonts.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatelessWidget {
-  const PrimaryButton({Key? key, required this.text, this.icon, this.onTap})
+  const PrimaryButton(
+      {Key? key,
+      required this.text,
+      this.icon,
+      this.onTap,
+      this.isLoading = false})
       : super(key: key);
 
+  final bool isLoading;
   final String text;
   final IconData? icon;
   final VoidCallback? onTap;
@@ -13,10 +19,7 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap ??
-          () {
-            //TODO not implimented
-          },
+      onTap: onTap ?? () {},
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 24),
         width: double.infinity,
@@ -38,10 +41,14 @@ class PrimaryButton extends StatelessWidget {
             const SizedBox(
               width: 16.0,
             ),
-            Text(
-              text,
-              style: CustomFontStyle.buttonFontStyle,
-            )
+            (!isLoading)
+                ? Text(
+                    text,
+                    style: CustomFontStyle.buttonFontStyle,
+                  )
+                : CircularProgressIndicator(
+                    color: CustomColors.baseColor,
+                  )
           ],
         ),
       ),

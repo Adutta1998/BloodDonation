@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class EditProfile extends StatelessWidget {
   static const ROUTE_NAME = "/edit_profile";
-  List<String> bloodGroups = [
+  final List<String> bloodGroups = [
     "A+",
     "B+",
     "AB+",

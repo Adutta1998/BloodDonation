@@ -27,7 +27,7 @@ class _DropDownFieldState extends State<DropDownField> {
                 .map(
                   (e) => PopupMenuItem(
                     value: e,
-                    child: Container(
+                    child: SizedBox(
                       width: 150,
                       child: Text(e),
                     ),
@@ -62,7 +62,7 @@ class _DropDownFieldState extends State<DropDownField> {
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text(group), Icon(Icons.arrow_drop_down)],
+                  children: [Text(group), const Icon(Icons.arrow_drop_down)],
                 ),
               )
             ],

@@ -7,13 +7,17 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final bool? isTextArea;
   final bool? enabled;
-  const CustomTextField(
-      {Key? key,
-      required this.hintText,
-      this.controller,
-      this.isTextArea,
-      this.enabled})
-      : super(key: key);
+  final bool? isPassword;
+  final onChenge;
+  const CustomTextField({
+    Key? key,
+    required this.hintText,
+    this.controller,
+    this.isTextArea,
+    this.enabled,
+    this.onChenge,
+    this.isPassword,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,9 @@ class CustomTextField extends StatelessWidget {
           focusNode: FocusNode(descendantsAreFocusable: false),
           autofocus: false,
           enabled: enabled,
+          obscureText: (isPassword != null) ? true : false,
           controller: controller,
+          onChanged: onChenge ?? (a) {},
           cursorColor: CustomColors.textColor,
           keyboardType: (isTextArea != null)
               ? TextInputType.multiline
