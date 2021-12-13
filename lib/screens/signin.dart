@@ -48,7 +48,7 @@ class SignInScreen extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
-                      Text("A Friend in Need is a\n Friend in Deed",
+                      Text("A Friend in Need is a\n Friend indeed",
                           textAlign: TextAlign.center,
                           style: CustomFontStyle.subtitleFontStyle),
                       const SizedBox(

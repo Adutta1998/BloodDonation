@@ -5,6 +5,7 @@ import 'package:blood_donation/api_clients/api_client.dart';
 import 'package:blood_donation/repositories/authentication_repository.dart';
 import 'package:blood_donation/repositories/users_repository.dart';
 import 'package:blood_donation/screens/Home.dart';
+import 'package:blood_donation/screens/bottom_navigation.dart';
 import 'package:blood_donation/screens/signin.dart';
 import 'package:blood_donation/utils/colors.dart';
 import 'package:blood_donation/utils/simple_bloc_observer.dart';
@@ -51,7 +52,7 @@ class MainApp extends StatelessWidget {
             appBarTheme:
                 AppBarTheme(backgroundColor: CustomColors.primaryColor)),
         home: (api.getLoggedInUser() != null)
-            ? const HomeScreen()
+            ? const BottomNavigationScreen()
             : SignInScreen(),
         onGenerateRoute: router.generateRoute,
       ),

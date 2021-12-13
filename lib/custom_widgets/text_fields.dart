@@ -32,8 +32,6 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
         TextField(
-          focusNode: FocusNode(descendantsAreFocusable: false),
-          autofocus: false,
           enabled: enabled,
           obscureText: (isPassword != null) ? true : false,
           controller: controller,
