@@ -20,7 +20,7 @@ void main() {
   runApp(
     MainApp(
       authenticationRepository: AuthenticationRepository(api: _apiClient),
-      usersRepository: UsersRepository(),
+      usersRepository: UsersRepository(api: _apiClient),
     ),
   );
 }

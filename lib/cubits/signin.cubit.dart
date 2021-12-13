@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:blood_donation/repositories/authentication_repository.dart';
 import 'package:blood_donation/utils/common_utils.dart';
 import 'package:equatable/equatable.dart';
+import 'package:supabase/supabase.dart';
 
 class SignInCubit extends Cubit<SignInState> {
   AuthenticationRepository authRepository;
@@ -18,8 +19,11 @@ class SignInCubit extends Cubit<SignInState> {
     emit(state.copyWith(password: s));
   }
 
-  login() {
-    authRepository.signin(state.email, state.password);
+  login() async {
+    User user = await authRepository.signin(state.email, state.password);
+    if (user != null) {
+      emit(state.copyWith(loaded: true, loading: false));
+    }
   }
 }
 

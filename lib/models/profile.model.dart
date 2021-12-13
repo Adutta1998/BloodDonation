@@ -1,62 +1,60 @@
+// To parse this JSON data, do
+//
+//     final profileModel = profileModelFromJson(jsonString);
+
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class ProfileModel {
-  String? uid;
-  String? name;
-  DateTime? dob;
-  String? profileImage;
-  String? address;
-  String? bloodGroup;
-  String? phone;
-  String? email;
-  double? lat;
-  double? lon;
-  DateTime? lastBloodDonationDate;
-
   ProfileModel({
-    this.uid,
-    this.name,
-    this.dob,
-    this.profileImage,
-    this.address,
-    this.bloodGroup,
-    this.phone,
-    this.email,
-    this.lat,
-    this.lon,
-    this.lastBloodDonationDate,
+    required this.userId,
+    required this.name,
+    required this.dob,
+    required this.profileImage,
+    required this.bloodGroup,
+    required this.phone,
+    required this.email,
+    required this.lastDateOfDonation,
+    required this.city,
+    required this.state,
   });
 
-  ProfileModel fromJson(String response) {
-    var json = jsonDecode(response);
-    var data = ProfileModel(
-      uid: json["uid"],
-      name: json["uid"],
-      dob: json["uid"],
-      profileImage: json["uid"],
-      address: json["uid"],
-      bloodGroup: json["uid"],
-      phone: json["uid"],
-      email: json["uid"],
-      lat: json["uid"],
-      lon: json["uid"],
-      lastBloodDonationDate: json["uid"],
-    );
-    return data;
-  }
+  final String userId;
+  final String name;
+  final DateTime dob;
+  final dynamic profileImage;
+  final String bloodGroup;
+  final String phone;
+  final String email;
+  final DateTime lastDateOfDonation;
+  final String city;
+  final String state;
 
-  toJson() {
-    Map<String, dynamic> json = {};
-    json["name"] = name;
-    json["dob"] = dob!.toIso8601String();
-    json["profile_image"] = profileImage;
-    json["address"] = address;
-    json["blood_group"] = bloodGroup;
-    json["phone"] = phone;
-    json["email"] = email;
-    json["latitude"] = lat;
-    json["longitude"] = lon;
-    json["last_date_of_donation"] = lastBloodDonationDate;
-    return json;
-  }
+  factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
+        userId: json["user_id"],
+        name: json["name"],
+        dob: DateTime.parse(json["dob"]),
+        profileImage: json["profile_image"],
+        bloodGroup: json["blood_group"],
+        phone: json["phone"],
+        email: json["email"],
+        lastDateOfDonation: DateTime.parse(json["last_date_of_donation"]),
+        city: json["city"],
+        state: json["state"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "user_id": userId,
+        "name": name,
+        "dob":
+            "${dob.year.toString().padLeft(4, '0')}-${dob.month.toString().padLeft(2, '0')}-${dob.day.toString().padLeft(2, '0')}",
+        "profile_image": profileImage,
+        "blood_group": bloodGroup,
+        "phone": phone,
+        "email": email,
+        "last_date_of_donation":
+            "${lastDateOfDonation.year.toString().padLeft(4, '0')}-${lastDateOfDonation.month.toString().padLeft(2, '0')}-${lastDateOfDonation.day.toString().padLeft(2, '0')}",
+        "city": city,
+        "state": state,
+      };
 }

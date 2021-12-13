@@ -18,11 +18,12 @@ class AuthenticationRepository {
     return user;
   }
 
-  signin(email, password) async {
+  Future<User> signin(email, password) async {
     print(email);
     print(password);
     var auth = AuthModel(email: email, password: password);
     GotrueSessionResponse p = await api.login(auth);
-    print(p.data);
+    User user = p.data!.user!;
+    return user;
   }
 }
