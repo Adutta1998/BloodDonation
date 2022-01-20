@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "710040344206",
+    "project_id": "blooddonorkgec",
+    "storage_bucket": "blooddonorkgec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710040344206:android:7286c24e5dd1d3dd199bdf",
+        "android_client_info": {
+          "package_name": "com.ad.blood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "710040344206-hffnhckdnge29fmpq4mu0deg0jliaqer.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ad.blood",
+            "certificate_hash": "f13dd6e7a7aa076a50f7ea2a037accb52a8e7a60"
+          }
+        },
+        {
+          "client_id": "710040344206-imrpv5m9iqlk9ek6geegmqjt03tm4lij.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZVqW--c352mfvaFFlutqG9f21OEGKZNs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "710040344206-imrpv5m9iqlk9ek6geegmqjt03tm4lij.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
