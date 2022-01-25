@@ -1,15 +1,13 @@
 import 'package:blood_app_nepal/model/donor.dart';
 import 'package:blood_app_nepal/screens/about.dart';
 import 'package:blood_app_nepal/screens/blood_request_page.dart';
-import 'package:blood_app_nepal/screens/edit_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import '../model/donor.dart';
 
 class MainDrawer extends StatefulWidget {
   final GoogleSignIn googleSignIn;
-
-  MainDrawer(this.googleSignIn);
+  final Donor currentUser;
+  MainDrawer({this.googleSignIn, this.currentUser});
 
   @override
   _MainDrawerState createState() => _MainDrawerState();
@@ -18,6 +16,7 @@ class MainDrawer extends StatefulWidget {
 class _MainDrawerState extends State<MainDrawer> {
   @override
   Widget build(BuildContext context) {
+    print(widget.currentUser.location);
     return Drawer(
       elevation: 0,
       child: Padding(
@@ -53,8 +52,14 @@ class _MainDrawerState extends State<MainDrawer> {
                 color: Colors.red,
               ),
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ShowRequest()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ShowRequest(
+                      location: widget.currentUser.location,
+                    ),
+                  ),
+                );
               },
             ),
             ListTile(

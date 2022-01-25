@@ -1,7 +1,10 @@
 import 'package:blood_app_nepal/screens/drawer.dart';
 import 'package:blood_app_nepal/screens/loading.dart';
 import 'package:blood_app_nepal/screens/blood_requests.dart';
+import 'package:blood_app_nepal/utils/custom_colors.dart';
+import 'package:blood_app_nepal/utils/custom_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../model/donor.dart';
@@ -62,11 +65,12 @@ class _LoginScreenState extends State<LoginScreen> {
   getUserLocation() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.lowest);
-    //List<Placemark> placemarks= await Geolocator.placemarkFromCoordinates(position.latitude, position.longitude);
-    //Placemark placemark = placemarks[0];
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    Placemark placemark = placemarks[0];
 
-    // String completeAddress = '${placemark.locality}';
-    // userLocationQuery.text = completeAddress;
+    String completeAddress = '${placemark.locality}';
+    userLocationQuery.text = completeAddress;
   }
 
   handleSignIn(GoogleSignInAccount account) {
@@ -232,15 +236,23 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.red,
+        backgroundColor: CustomColors.blood,
+        title: Text(
+          "BloodFriend",
+          style: TextStyle(
+            fontFamily: "Gotham",
+            fontSize: 20.0,
+          ),
+        ),
+        centerTitle: true,
       ),
-      drawer: MainDrawer(googleSignIn),
+      drawer: MainDrawer(googleSignIn: googleSignIn, currentUser: currentUser),
       body: ListView(
         children: <Widget>[
           Stack(children: <Widget>[
             Container(
               height: 150.0,
-              color: Colors.red,
+              color: CustomColors.blood,
             ),
             Padding(
               padding: const EdgeInsets.all(15.0),
@@ -251,7 +263,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: Text(
-                        "Find a Donor",
+                        "Find a Friend",
                         style: TextStyle(
                             fontFamily: "Gotham",
                             fontSize: 20.0,
@@ -348,14 +360,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         Padding(
                           padding:
                               const EdgeInsets.only(left: 20.0, bottom: 10.0),
-                          child: RaisedButton(
+                          child: ElevatedButton(
                             onPressed: () {
                               setState(() {
                                 wannaSearch = true;
                                 FocusScope.of(context).unfocus();
                               });
                             },
-                            color: Colors.red,
                             child: Text(
                               "Search",
                               style: TextStyle(
@@ -363,15 +374,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: 20.0,
                                   color: Colors.white),
                             ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                side: BorderSide(color: Colors.red)),
+                            style: Styles.buttonstyle,
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 20.0, bottom: 10.0, right: 20.0),
-                          child: RaisedButton(
+                          child: ElevatedButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
@@ -379,7 +388,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                       builder: (context) => EditProfile(
                                           currentUser, authScreen())));
                             },
-                            color: Colors.red,
                             child: Text(
                               "Be Donor",
                               style: TextStyle(
@@ -387,9 +395,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontSize: 20.0,
                                   color: Colors.white),
                             ),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                side: BorderSide(color: Colors.red)),
+                            style: Styles.buttonstyle,
                           ),
                         ),
                       ],
@@ -436,7 +442,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.red,
+          backgroundColor: CustomColors.blood,
           child: Icon(Icons.add),
           onPressed: () {
             Navigator.push(
@@ -507,28 +513,41 @@ class ShowDonors extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Expanded(
-                            flex: 2,
+                            flex: 3,
                             child: Container(
-                              color: Colors.black87,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage("assets/img/logo.png"),
+                                  fit: BoxFit.fitHeight,
+                                ),
+                              ),
                               alignment: Alignment.center,
-                              child: Text(location,
-                                  style: TextStyle(
+                              // color: CustomColors.blood,
+                              child: Text(
+                                bloodGroup,
+                                style: TextStyle(
                                     color: Colors.white,
-                                  )),
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                           Expanded(
-                            flex: 3,
+                            flex: 1,
                             child: Container(
                               alignment: Alignment.center,
-                              color: Colors.red,
-                              child: Text(bloodGroup,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold)),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50.0),
+                                color: Colors.black87,
+                              ),
+                              child: Text(
+                                location,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
-                          )
+                          ),
                         ],
                       )),
                 ],
@@ -541,17 +560,25 @@ class ShowDonors extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Text(
-                      displayName,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20.0,
-                          fontFamily: "Gotham",
-                          fontWeight: FontWeight.bold),
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                  Row(
+                    children: [
+                      Icon(Icons.person),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 10.0),
+                        child: Text(
+                          displayName,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0,
+                              fontFamily: "Gotham",
+                              fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 0.0),
@@ -561,8 +588,11 @@ class ShowDonors extends StatelessWidget {
                         Row(
                           children: <Widget>[
                             Icon(
-                              Icons.person_pin,
-                              color: Colors.redAccent,
+                              gender == "male" ? Icons.male : Icons.female,
+                              color: CustomColors.blood,
+                            ),
+                            SizedBox(
+                              width: 8,
                             ),
                             Text(
                               "$gender",
@@ -583,12 +613,15 @@ class ShowDonors extends StatelessWidget {
                               Icons.phone,
                               color: Colors.blue,
                             ),
+                            SizedBox(
+                              width: 8,
+                            ),
                             InkWell(
                               onTap: () {
                                 _launchURL("tel:$phoneNumber");
                               },
                               child: Text(
-                                "Call Now",
+                                gender == "Male" ? "Call Him" : "Call Her",
                                 style: TextStyle(
                                     color: Colors.black87,
                                     fontWeight: FontWeight.bold,

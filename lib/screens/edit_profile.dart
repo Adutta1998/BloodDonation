@@ -2,6 +2,7 @@ import 'package:blood_app_nepal/model/donor.dart';
 import 'package:blood_app_nepal/screens/thank_you.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'login_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'loading.dart';
@@ -41,13 +42,15 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     final donorRef = FirebaseFirestore.instance.collection('donor');
 
-    // getUserLocation() async {
-    //   Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.lowest);
-    //   List<Placemark> placemarks= await Geolocator().placemarkFromCoordinates(position.latitude, position.longitude);
-    //   Placemark placemark = placemarks[0];
-    //   String completeAddress = '${placemark.subLocality},${placemark.locality}';
-    //   addressController.text = completeAddress;
-    // }
+    getUserLocation() async {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+      Placemark placemark = placemarks[0];
+      String completeAddress = '${placemark.subLocality},${placemark.locality}';
+      addressController.text = completeAddress;
+    }
 
     setSearchParam(String locationSearch) {
       List<String> locationSearchList = List();
@@ -161,7 +164,9 @@ class _EditProfileState extends State<EditProfile> {
                                       Icons.location_on,
                                       color: Colors.red,
                                     ),
-                                    onPressed: () {}),
+                                    onPressed: () {
+                                      getUserLocation();
+                                    }),
                                 hintText: "Your Location",
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
@@ -308,8 +313,11 @@ class _EditProfileState extends State<EditProfile> {
                               color: Theme.of(context).primaryColor,
                               onPressed: () {
                                 if (_formKey.currentState.validate()) {
-                                  Scaffold.of(context).showSnackBar(SnackBar(
-                                      content: Text('Processing Data')));
+                                  Scaffold.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Processing Data'),
+                                    ),
+                                  );
                                   handleDonorUpdate();
                                 }
                               }),

@@ -1,9 +1,13 @@
+import 'package:blood_app_nepal/utils/custom_colors.dart';
+import 'package:blood_app_nepal/utils/font_fams.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'loading.dart';
 
 class ShowRequest extends StatefulWidget {
+  final String location;
+  ShowRequest({this.location}) : super();
   @override
   _ShowRequestState createState() => _ShowRequestState();
 }
@@ -13,9 +17,12 @@ class _ShowRequestState extends State<ShowRequest> {
 
   @override
   Widget build(BuildContext context) {
+    print("location:" + widget.location.toString());
     return Scaffold(
       appBar: AppBar(
         title: Text("Blood Requests"),
+        centerTitle: true,
+        backgroundColor: CustomColors.blood,
       ),
       body: StreamBuilder(
         stream: bloodRequestRef.snapshots(),
@@ -25,7 +32,8 @@ class _ShowRequestState extends State<ShowRequest> {
           }
           List<ShowRequests> allRequests = [];
           snapshot.data.docs.forEach((doc) {
-            allRequests.add(ShowRequests.fromDocument(doc));
+            if (doc["location"] == widget.location)
+              allRequests.add(ShowRequests.fromDocument(doc));
           });
 
           return Container(
@@ -94,28 +102,41 @@ class ShowRequests extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: <Widget>[
                           Expanded(
-                            flex: 2,
+                            flex: 3,
                             child: Container(
-                              color: Colors.black87,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage("assets/img/logo.png"),
+                                  fit: BoxFit.fitHeight,
+                                ),
+                              ),
                               alignment: Alignment.center,
-                              child: Text(location,
-                                  style: TextStyle(
+                              // color: CustomColors.blood,
+                              child: Text(
+                                bloodGroup,
+                                style: TextStyle(
                                     color: Colors.white,
-                                  )),
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                           Expanded(
-                            flex: 3,
+                            flex: 1,
                             child: Container(
                               alignment: Alignment.center,
-                              color: Colors.red,
-                              child: Text(bloodGroup,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20.0,
-                                      fontWeight: FontWeight.bold)),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50.0),
+                                color: Colors.black87,
+                              ),
+                              child: Text(
+                                location,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
-                          )
+                          ),
                         ],
                       )),
                 ],
@@ -147,17 +168,14 @@ class ShowRequests extends StatelessWidget {
                         ),
                         Row(
                           children: <Widget>[
-                            Icon(
-                              Icons.hdr_strong,
-                              color: Colors.redAccent,
-                            ),
-                            Text(
-                              " $bloodAmount pin Blood Needed",
-                              style: TextStyle(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Gotham",
-                                  fontSize: 18.0),
+                            SizedBox(
+                              width: 230.0,
+                              child: Text(
+                                "Needed $bloodAmount pin of Blood gdhdd",
+                                // overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                                style: CustomFontStyles.name,
+                              ),
                             ),
                           ],
                         ),
