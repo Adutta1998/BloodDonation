@@ -1,9 +1,10 @@
 import 'package:blood_app_nepal/model/donor.dart';
 import 'package:blood_app_nepal/screens/thank_you.dart';
+import 'package:blood_app_nepal/utils/custom_colors.dart';
+import 'package:blood_app_nepal/utils/custom_styles.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
-import 'login_screen.dart';
 import 'package:geolocator/geolocator.dart';
 import 'loading.dart';
 
@@ -44,16 +45,17 @@ class _EditProfileState extends State<EditProfile> {
 
     getUserLocation() async {
       Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+          desiredAccuracy: LocationAccuracy.lowest);
       List<Placemark> placemarks =
           await placemarkFromCoordinates(position.latitude, position.longitude);
       Placemark placemark = placemarks[0];
-      String completeAddress = '${placemark.subLocality},${placemark.locality}';
+      print(placemark);
+      String completeAddress = '${placemark.locality}';
       addressController.text = completeAddress;
     }
 
     setSearchParam(String locationSearch) {
-      List<String> locationSearchList = List();
+      List<String> locationSearchList = [];
       String temp = "";
       for (int i = 0; i < locationSearch.length; i++) {
         temp = temp + locationSearch[i];
@@ -111,6 +113,7 @@ class _EditProfileState extends State<EditProfile> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Thank You Hero!!"),
+          backgroundColor: CustomColors.blood,
         ),
         body: Builder(builder: (context) {
           return Padding(
@@ -164,8 +167,8 @@ class _EditProfileState extends State<EditProfile> {
                                       Icons.location_on,
                                       color: Colors.red,
                                     ),
-                                    onPressed: () {
-                                      getUserLocation();
+                                    onPressed: () async {
+                                      await getUserLocation();
                                     }),
                                 hintText: "Your Location",
                                 border: OutlineInputBorder(
@@ -304,13 +307,13 @@ class _EditProfileState extends State<EditProfile> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: FlatButton(
+                          child: ElevatedButton(
                               child: Text(
                                 "I am Ready to Donate",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20.0),
                               ),
-                              color: Theme.of(context).primaryColor,
+                              style: Styles.buttonstyle,
                               onPressed: () {
                                 if (_formKey.currentState.validate()) {
                                   Scaffold.of(context).showSnackBar(

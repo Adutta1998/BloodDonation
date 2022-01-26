@@ -1,6 +1,7 @@
 import 'package:blood_app_nepal/model/donor.dart';
 import 'package:blood_app_nepal/screens/about.dart';
 import 'package:blood_app_nepal/screens/blood_request_page.dart';
+import 'package:blood_app_nepal/screens/my_requests.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -56,7 +57,7 @@ class _MainDrawerState extends State<MainDrawer> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ShowRequest(
-                      location: widget.currentUser.location,
+                      currentUser: widget.currentUser,
                     ),
                   ),
                 );
@@ -64,17 +65,23 @@ class _MainDrawerState extends State<MainDrawer> {
             ),
             ListTile(
               title: Text(
-                'Edit Profile',
+                'My Requests',
                 style: TextStyle(
                     color: Colors.black, fontFamily: "Gotham", fontSize: 16.0),
               ),
               leading: Icon(
-                Icons.person_add_outlined,
+                Icons.book,
                 color: Colors.red,
               ),
               onTap: () {
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => EditProfile(),),);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyRequests(
+                      currentUser: widget.currentUser,
+                    ),
+                  ),
+                );
               },
             ),
             ListTile(

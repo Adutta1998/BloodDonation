@@ -1,13 +1,15 @@
+import 'package:blood_app_nepal/model/donor.dart';
 import 'package:blood_app_nepal/utils/custom_colors.dart';
 import 'package:blood_app_nepal/utils/font_fams.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'feedback_screen.dart';
 import 'loading.dart';
 
 class ShowRequest extends StatefulWidget {
-  final String location;
-  ShowRequest({this.location}) : super();
+  final Donor currentUser;
+  ShowRequest({this.currentUser}) : super();
   @override
   _ShowRequestState createState() => _ShowRequestState();
 }
@@ -17,7 +19,7 @@ class _ShowRequestState extends State<ShowRequest> {
 
   @override
   Widget build(BuildContext context) {
-    print("location:" + widget.location.toString());
+    print("location:" + widget.currentUser.location.toString());
     return Scaffold(
       appBar: AppBar(
         title: Text("Blood Requests"),
@@ -32,8 +34,15 @@ class _ShowRequestState extends State<ShowRequest> {
           }
           List<ShowRequests> allRequests = [];
           snapshot.data.docs.forEach((doc) {
-            if (doc["location"] == widget.location)
-              allRequests.add(ShowRequests.fromDocument(doc));
+            if (doc["location"]
+                    .toString()
+                    .contains(widget.currentUser.location) &&
+                (doc["sender"] != widget.currentUser.id)) {
+              allRequests.add(ShowRequests.fromDocument(
+                doc,
+                currentUserId: widget.currentUser.id,
+              ));
+            }
           });
 
           return Container(
@@ -53,23 +62,33 @@ class ShowRequests extends StatelessWidget {
   final String bloodGroup;
   final String bloodAmount;
   final String phoneNumber;
+  final String senderId;
   final String requiredDate;
+  final String id;
+  final String currentUserId;
 
   ShowRequests({
+    this.senderId,
     this.location,
+    this.id,
     this.phoneNumber,
+    this.currentUserId,
     this.bloodGroup,
     this.requiredDate,
     this.bloodAmount,
   });
 
-  factory ShowRequests.fromDocument(DocumentSnapshot doc) {
+  factory ShowRequests.fromDocument(DocumentSnapshot doc,
+      {@required String currentUserId}) {
     return ShowRequests(
       location: doc['location'],
       bloodGroup: doc['bloodGroup'],
       phoneNumber: doc['phoneNumber'],
       requiredDate: doc['bloodNeededDate'],
       bloodAmount: doc['bloodAmount'],
+      senderId: doc["sender"],
+      id: doc.id,
+      currentUserId: currentUserId,
     );
   }
 
@@ -124,13 +143,14 @@ class ShowRequests extends StatelessWidget {
                           Expanded(
                             flex: 1,
                             child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 8.0),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50.0),
                                 color: Colors.black87,
                               ),
                               child: Text(
-                                location,
+                                location.split(",").first,
                                 style: TextStyle(
                                   color: Colors.white,
                                 ),
@@ -171,7 +191,7 @@ class ShowRequests extends StatelessWidget {
                             SizedBox(
                               width: 230.0,
                               child: Text(
-                                "Needed $bloodAmount pin of Blood gdhdd",
+                                "Needed $bloodAmount pin of Blood",
                                 // overflow: TextOverflow.ellipsis,
                                 softWrap: true,
                                 style: CustomFontStyles.name,
@@ -183,6 +203,7 @@ class ShowRequests extends StatelessWidget {
                           height: 8.0,
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
                             Icon(
                               Icons.phone,
@@ -202,6 +223,15 @@ class ShowRequests extends StatelessWidget {
                               ),
                             ),
                           ],
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            print(id);
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => FeedbackForm(currentUserId, id),
+                            ));
+                          },
+                          child: Text("Feedback"),
                         ),
                       ],
                     ),

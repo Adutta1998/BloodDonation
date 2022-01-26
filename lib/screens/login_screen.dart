@@ -3,6 +3,7 @@ import 'package:blood_app_nepal/screens/loading.dart';
 import 'package:blood_app_nepal/screens/blood_requests.dart';
 import 'package:blood_app_nepal/utils/custom_colors.dart';
 import 'package:blood_app_nepal/utils/custom_styles.dart';
+import 'package:blood_app_nepal/utils/font_fams.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -73,9 +74,9 @@ class _LoginScreenState extends State<LoginScreen> {
     userLocationQuery.text = completeAddress;
   }
 
-  handleSignIn(GoogleSignInAccount account) {
+  handleSignIn(GoogleSignInAccount account) async {
     if (account != null) {
-      createUserInFireStore();
+      await createUserInFireStore();
       setState(() {
         isAuth = true;
       });
@@ -165,16 +166,16 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              Text(
+                "BloodFriend",
+                style: CustomFontStyles.name,
+              ),
               Container(
-                  padding: EdgeInsets.only(top: 10.0, bottom: 30.0),
-                  child: Text(
-                    "Donate Blood or Find Donor!",
-                    style: TextStyle(
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Gotham",
-                        fontSize: 20.0),
-                  )),
+                padding: EdgeInsets.only(top: 10.0, bottom: 30.0),
+                child: Text(
+                  "A friend in need is a friend indeed",
+                ),
+              ),
               Container(
                   padding: EdgeInsets.only(top: 30.0, bottom: 50.0),
                   child: Image.asset(
@@ -223,12 +224,12 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-      bottomSheet: InkWell(
-          onTap: () => launch("https://yourkoseli.com"),
-          child: Image.asset(
-            'assets/img/supporter.png',
-            width: double.infinity,
-          )),
+      // bottomSheet: InkWell(
+      //     onTap: () => launch("https://yourkoseli.com"),
+      //     child: Image.asset(
+      //       'assets/img/supporter.png',
+      //       width: double.infinity,
+      //     )),
     );
   }
 
@@ -246,7 +247,9 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         centerTitle: true,
       ),
-      drawer: MainDrawer(googleSignIn: googleSignIn, currentUser: currentUser),
+      drawer: (currentUser != null)
+          ? MainDrawer(googleSignIn: googleSignIn, currentUser: currentUser)
+          : null,
       body: ListView(
         children: <Widget>[
           Stack(children: <Widget>[

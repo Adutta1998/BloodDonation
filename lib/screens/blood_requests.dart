@@ -1,8 +1,11 @@
 import 'package:blood_app_nepal/model/donor.dart';
 import 'package:blood_app_nepal/screens/loading.dart';
+import 'package:blood_app_nepal/utils/custom_colors.dart';
+import 'package:blood_app_nepal/utils/custom_styles.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:uuid/uuid.dart';
 
 class RequestBlood extends StatefulWidget {
@@ -29,20 +32,22 @@ class _RequestBloodState extends State<RequestBlood> {
   TextEditingController bloodNeedDateController = TextEditingController();
 
   getUserLocation() async {
-    // Position position = await Geolocator()
-    //     .getCurrentPosition(desiredAccuracy: LocationAccuracy.lowest);
-    // List<Placemark> placemarks = await Geolocator()
-    //     .placemarkFromCoordinates(position.latitude, position.longitude);
-    // Placemark placemark = placemarks[0];
-    // String completeAddress =
-    //     '${placemark.locality}, ${placemark.administrativeArea}';
-    // addressController.text = completeAddress;
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.lowest);
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    Placemark placemark = placemarks[0];
+    print(placemark);
+    String completeAddress =
+        '${placemark.locality}, ${placemark.administrativeArea}';
+    addressController.text = completeAddress;
   }
 
   requestBlood() async {
-    DocumentSnapshot doc = await bloodRequestRef.doc(Uuid().v4()).get();
+    // DocumentSnapshot doc = await bloodRequestRef.doc(Uuid().v4()).get();
 
     bloodRequestRef.doc(Uuid().v4()).set({
+      "sender": widget.currentUser.id,
       "location": addressController.text,
       "bloodGroup": bloodGroupController.text,
       "phoneNumber": phoneNumberController.text,
@@ -88,6 +93,7 @@ class _RequestBloodState extends State<RequestBlood> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Request Blood"),
+        backgroundColor: CustomColors.blood,
       ),
       body: Builder(
         builder: (context) {
@@ -239,6 +245,7 @@ class _RequestBloodState extends State<RequestBlood> {
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 20.0),
                               ),
+                              style: Styles.buttonstyle,
                               // color: Theme.of(context).primaryColor,
                               onPressed: () {
                                 if (_formKey.currentState.validate()) {
